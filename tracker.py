@@ -13,7 +13,7 @@ test = "https://discord.com/api/webhooks/953362427884478484/XKStZT199JlRCrrwWBnQ
 prod = "https://discord.com/api/webhooks/1038669013863104572/6IEqXuZOhUHtrervvnaAx3WaLRR3rgfRqctqD2lTdN6wph2ZgvriftDPCXgrzj_NKIkp"
 
 webhook = DiscordWebhook(
-        url = test,
+        url = prod,
     username='WALLET TRACKER'
 )
 
@@ -70,7 +70,8 @@ while True:
                         
                         if transaction["isError"] == "0":
                             
-                            method = get_function_from_methodID(contract=transaction['to'], methodID=transaction["input"][2:10])
+                            method = get_function_from_methodID(contract=transaction['to'], methodID=transaction["input"][:10])
+                            
                             description = ( f"**Address Tag:** {folder.upper()}\n\n"
                                             f"**Hash:** {transaction['hash']}\n\n"
                                             f"**Method:** {method}\n\n"
@@ -78,8 +79,7 @@ while True:
                                             f"**To:** {transaction['to']}\n\n"
                                             f"**Value:** {transaction['value']} ETH\n\n"
                                             f"**Timestamp:** {tx_date}\n\n"
-                                            f"**Type:** {transaction['type']}\n\n"
-                                            f"**Contract Address:** {transaction['contractAddress']}")
+                                            f"**Type:** {transaction['type']}\n\n")
                                                 
                             embed = DiscordEmbed(title=tracked_account, description=description, color="1DA1F2",
                                                     url=f"https://etherscan.io/tx/{transaction['hash']}")
@@ -90,6 +90,7 @@ while True:
                             
                             webhook.add_embed(embed)
                             webhook.execute()
+                            print("Discord message sent")
             
             time.sleep(15)
     

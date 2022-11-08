@@ -99,11 +99,15 @@ def get_function_from_methodID(contract, methodID):
     to compute it with contract ABI"""
     
     if methodID:
-        api = requests.get(f'https://raw.githubusercontent.com/ethereum-lists/4bytes/master/signatures/{methodID}').text
+        api = requests.get(f'https://raw.githubusercontent.com/ethereum-lists/4bytes/master/signatures/{methodID[2:]}').text
         if api == "404: Not Found":
             abi = get_contract_abi(contract)
             data = get_all_methods_and_parameters(abi)
             
             return find_function(data, methodID)
-
         
+        else:
+            return api
+
+
+print(get_function_from_methodID("0x6b175474e89094c44da98b954eedeac495271d0f", "0xa9059cbb"))
