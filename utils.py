@@ -1,5 +1,14 @@
 import requests
 
+import json
+
+from web3 import Web3
+
+#############################################################################################################
+
+def telegram_message(message):
+    requests.get(f"https://api.telegram.org/bot1768068100:AAHVGEdeItHypLHBfqmMoqdqhX4KdgO08Gc/"
+                 f"sendMessage?chat_id=901170303&text={message}")
 
 def get_balance(address):
         
@@ -45,13 +54,56 @@ def get_all_transactions(address, qty=15):
     
     return data
 
-def telegram_message(message):
-    requests.get(f"https://api.telegram.org/bot1768068100:AAHVGEdeItHypLHBfqmMoqdqhX4KdgO08Gc/"
-                 f"sendMessage?chat_id=901170303&text={message}")
+#############################################################################################################
+   
+def get_contract_abi(contract_address, write_to_file=False):
+    """Get ABI of a contract and returns it to json format"""
+
+    url = (f"https://api.etherscan.io/api?module=contract&action=getabi&address={contract_address}&"
+           f"apikey=8H1U3JF6KGZIJH2VBSF6QE96R73I13NTAF")
+
+    response = requests.get(url).json()
+    abi = json.loads(response['result'])
+    
+    if write_to_file:
+        with open(f'abi_{contract_address}.json', 'w') as f:
+            json.dump(abi, f, indent=4)
+
+    return abi
 
 
-def scrape_transaction_action():
-    "https://etherscan.io/tx/0x986e0a39c0d45bd3558229206063662fbc111e03885f836a7f25585b3ca865e6"
-    pass
+def get_all_methods_and_parameters(abi):
+    w3 = Web3()
+    data = dict()
+
+    for entry in abi:
+        if entry['type'] == 'function':
+            function = entry['name'] + '(' + ','.join([i['type'] for i in entry['inputs']]) + ')'
+            methodId = w3.sha3(text=function)[0:4].hex()
+            data[methodId] = function
+
+    return data
+
+
+def find_function(data, hash):
+    for key, value in data.items():
+        if key == hash:
+            return value
+    return "Not found"
+
+#############################################################################################################
+
+def get_function_from_methodID(contract, methodID):
+    """Trying to find the function name from the methodID
+    first with an API call to 4bytes and if not found trying
+    to compute it with contract ABI"""
+    
+    if methodID:
+        api = requests.get(f'https://raw.githubusercontent.com/ethereum-lists/4bytes/master/signatures/{methodID}').text
+        if api == "404: Not Found":
+            abi = get_contract_abi(contract)
+            data = get_all_methods_and_parameters(abi)
+            
+            return find_function(data, methodID)
 
         

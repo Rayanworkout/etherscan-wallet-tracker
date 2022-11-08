@@ -2,7 +2,7 @@ import json
 import os
 import time
 
-from utils import get_all_transactions, get_balance, telegram_message, get_func_called
+from utils import get_all_transactions, get_balance, telegram_message, get_function_from_methodID
 
 from discord_webhook import DiscordEmbed, DiscordWebhook
     
@@ -69,9 +69,11 @@ while True:
                         tx_date = time.strftime("%d/%m/%Y %H:%M:%S", time.localtime(int(transaction["time"])))
                         
                         if transaction["isError"] == "0":
+                            
+                            method = get_function_from_methodID(contract=transaction['to'], methodID=transaction["input"][2:10])
                             description = ( f"**Address Tag:** {folder.upper()}\n\n"
                                             f"**Hash:** {transaction['hash']}\n\n"
-                                            f"**Method:** {get_func_called(transaction['input'])}\n\n"
+                                            f"**Method:** {method}\n\n"
                                             f"**From:** {transaction['from']}\n\n"
                                             f"**To:** {transaction['to']}\n\n"
                                             f"**Value:** {transaction['value']} ETH\n\n"
