@@ -108,6 +108,3 @@ def get_function_from_methodID(contract, methodID):
         
         else:
             return api
-
-
-print(get_function_from_methodID("0x6b175474e89094c44da98b954eedeac495271d0f", "0xa9059cbb"))
