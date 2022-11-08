@@ -38,13 +38,14 @@ def get_all_transactions(address, qty=15):
                             "time": tx["timeStamp"],
                             "type": "normal" if tx["hash"] in [tx["hash"] for tx in normal_txs_response["result"]] else "internal",
                             "isError": tx["isError"],
-                            "contractAddress": tx["contractAddress"] if tx["contractAddress"] else None}
+                            "contractAddress": tx["contractAddress"] if tx["contractAddress"] else None,
+                            "input": tx["input"] if tx["input"] else None}
     if not data:
         return "no transaction found for this account"
     
     return data
 
-def telegram_messge(message):
+def telegram_message(message):
     requests.get(f"https://api.telegram.org/bot1768068100:AAHVGEdeItHypLHBfqmMoqdqhX4KdgO08Gc/"
                  f"sendMessage?chat_id=901170303&text={message}")
 
@@ -53,3 +54,4 @@ def scrape_transaction_action():
     "https://etherscan.io/tx/0x986e0a39c0d45bd3558229206063662fbc111e03885f836a7f25585b3ca865e6"
     pass
 
+        

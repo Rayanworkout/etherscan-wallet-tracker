@@ -2,18 +2,18 @@ import json
 import os
 import time
 
-from utils import get_all_transactions, get_balance, telegram_messge
+from utils import get_all_transactions, get_balance, telegram_message, get_func_called
 
 from discord_webhook import DiscordEmbed, DiscordWebhook
     
 
-# RENDRE MULTICHAIN
-
 ###################################################################################################
 
+test = "https://discord.com/api/webhooks/953362427884478484/XKStZT199JlRCrrwWBnQnPPd0HdvqQmixYxHGkeVJBNjDvhaGz_e--4JJvbFA35YazsR"
+prod = "https://discord.com/api/webhooks/1038669013863104572/6IEqXuZOhUHtrervvnaAx3WaLRR3rgfRqctqD2lTdN6wph2ZgvriftDPCXgrzj_NKIkp"
+
 webhook = DiscordWebhook(
-        url = 'https://discord.com/api/webhooks/1038669013863104572/6IEqXuZOh'
-              'UHtrervvnaAx3WaLRR3rgfRqctqD2lTdN6wph2ZgvriftDPCXgrzj_NKIkp',
+        url = test,
     username='WALLET TRACKER'
 )
 
@@ -37,6 +37,7 @@ def check_address(address):
                     return None 
                 
                 return new_transactions
+
 
 if not os.path.isdir("tracked_accounts"):
     os.mkdir("tracked_accounts")
@@ -70,6 +71,7 @@ while True:
                         if transaction["isError"] == "0":
                             description = ( f"**Address Tag:** {folder.upper()}\n\n"
                                             f"**Hash:** {transaction['hash']}\n\n"
+                                            f"**Method:** {get_func_called(transaction['input'])}\n\n"
                                             f"**From:** {transaction['from']}\n\n"
                                             f"**To:** {transaction['to']}\n\n"
                                             f"**Value:** {transaction['value']} ETH\n\n"
@@ -90,4 +92,4 @@ while True:
             time.sleep(15)
     
     except Exception as err:
-        telegram_messge(f"Error with wallet tracker bot: {err}")
+        telegram_message(f"Error with wallet tracker bot: {str(err)}")
