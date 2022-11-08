@@ -18,19 +18,19 @@ async def on_ready():
 
 #############################################################################################################
 
-# @bot.event
-# async def on_command_error(ctx, error):
-#     """Custom error handler, for the selected exceptions
-#     not appearing in the terminal, or sending msg when arg is mandatory"""
+@bot.event
+async def on_command_error(ctx, error):
+    """Custom error handler, for the selected exceptions
+    not appearing in the terminal, or sending msg when arg is mandatory"""
 
-#     if isinstance(error, MissingRequiredArgument):
-#         embed = discord.Embed(
-#             description="You need to specify something after the command !  :x:",
-#             color=discord.Colour.blue(),
-#         )
-#         await ctx.reply(embed=embed)
-#     elif isinstance(error, (CheckFailure, CommandNotFound)):
-#         pass
+    if isinstance(error, MissingRequiredArgument):
+        embed = discord.Embed(
+            description="You need to specify something after the command !  :x:",
+            color=discord.Colour.blue(),
+        )
+        await ctx.reply(embed=embed)
+    elif isinstance(error, (CheckFailure, CommandNotFound)):
+        pass
 
 @bot.check
 async def globally_block_dms(ctx):

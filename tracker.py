@@ -40,7 +40,7 @@ def check_address(address):
 
 if not os.path.isdir("tracked_accounts"):
     os.mkdir("tracked_accounts")
-
+    
 while True:
     
     try:
@@ -58,15 +58,14 @@ while True:
                 result = check_address(tracked_account)
                 
                 if not result:
-                    print("no new transaction")
+                    print("no new transaction\n")
                     
                 elif result:
-                    print(f"{len(result)} new transaction(s) found")
+                    print(f"{len(result)} new transaction(s) found\n\n")
                     
                     for transaction in result:
                         
-                        # convert timestamp to readable date
-                        tx_date = time.strftime("%d/%m/%Y %H:%M:%S", time.localtime(int(transaction["timestamp"])))
+                        tx_date = time.strftime("%d/%m/%Y %H:%M:%S", time.localtime(int(transaction["time"])))
                         
                         if transaction["isError"] == "0":
                             description = ( f"**Address Tag:** {folder.upper()}\n\n"
@@ -81,7 +80,7 @@ while True:
                             embed = DiscordEmbed(title=tracked_account, description=description, color="1DA1F2",
                                                     url=f"https://etherscan.io/tx/{transaction['hash']}")
                             
-                            embed.set_author(name="NEW TRANSACTION", description=f"Balance: {get_balance(tracked_account)} ETH")
+                            embed.set_author(name=f"NEW TRANSACTION / Current Balance: {get_balance(tracked_account)} ETH")
                                                     
                             embed.set_timestamp()
                             
@@ -92,4 +91,3 @@ while True:
     
     except Exception as err:
         telegram_messge(f"Error with wallet tracker bot: {err}")
-        exit()
