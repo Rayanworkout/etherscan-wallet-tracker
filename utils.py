@@ -106,5 +106,8 @@ def get_function_from_methodID(contract, methodID):
             
             return find_function(data, methodID)
         
+        elif api == "400: Invalid request":
+            return "Transfer between Wallets"
+        
         else:
             return api
