@@ -96,3 +96,6 @@ while True:
     
     except Exception as err:
         telegram_message(f"Error with wallet tracker bot: {str(err)}")
+    
+    except json.JSONDecodeError:
+        pass
