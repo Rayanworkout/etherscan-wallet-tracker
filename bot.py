@@ -140,4 +140,4 @@ async def untrack(ctx, arg):
 if not os.path.isdir("tracked_accounts"):
     os.mkdir("tracked_accounts")
 
-bot.run("MTAzODY1NDYyOTg0MTQ3MzU3OA.GlqVNV.O18rha9lCJnF4LyvAohkeykWQqjUZntNxON0rE")
+bot.run("BOT_TOKEN")
