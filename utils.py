@@ -7,13 +7,13 @@ from web3 import Web3
 #############################################################################################################
 
 def telegram_message(message):
-    requests.get(f"https://api.telegram.org/bot1768068100:AAHVGEdeItHypLHBfqmMoqdqhX4KdgO08Gc/"
-                 f"sendMessage?chat_id=901170303&text={message}")
+    requests.get(f"https://api.telegram.org/TOKEN/"
+                 f"sendMessage?chat_id=CHAT_ID&text={message}")
 
 def get_balance(address):
         
     data = requests.get("https://api.etherscan.io/api?module=account&action=balance"
-                        f"&address={address}&tag=latest&apikey=8H1U3JF6KGZIJH2VBSF6QE96R73I13NTAF").json()
+                        f"&address={address}&tag=latest&apikey=KEY").json()
     
     if data["message"] == "NOTOK":
         return "Could not get Balance"
@@ -24,10 +24,10 @@ def get_balance(address):
 def get_all_transactions(address, qty=15):
     
     normal_tx_url = (f"/api?module=account&action=txlist&address={address}&startblock=0"
-           f"&endblock=99999999&page=1&offset={qty}&sort=desc&apikey=8H1U3JF6KGZIJH2VBSF6QE96R73I13NTAF")
+           f"&endblock=99999999&page=1&offset={qty}&sort=desc&apikey=KEY")
     
     internal_tx_url = (f"/api?module=account&action=txlistinternal&address={address}&startblock=0"
-           f"&endblock=99999999&page=1&offset={qty}&sort=desc&apikey=8H1U3JF6KGZIJH2VBSF6QE96R73I13NTAF")
+           f"&endblock=99999999&page=1&offset={qty}&sort=desc&apikey=KEY")
     
     normal_txs_response = requests.get("https://api.etherscan.io" + normal_tx_url).json()
     internal_tx_response = requests.get("https://api.etherscan.io" + internal_tx_url).json()
@@ -60,7 +60,7 @@ def get_contract_abi(contract_address, write_to_file=False):
     """Get ABI of a contract and returns it to json format"""
 
     url = (f"https://api.etherscan.io/api?module=contract&action=getabi&address={contract_address}&"
-           f"apikey=8H1U3JF6KGZIJH2VBSF6QE96R73I13NTAF")
+           f"apikey=KEY")
 
     response = requests.get(url).json()
     abi = json.loads(response['result'])
