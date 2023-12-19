@@ -9,8 +9,7 @@ from discord_webhook import DiscordEmbed, DiscordWebhook
 
 ###################################################################################################
 
-test = "https://discord.com/api/webhooks/953362427884478484/XKStZT199JlRCrrwWBnQnPPd0HdvqQmixYxHGkeVJBNjDvhaGz_e--4JJvbFA35YazsR"
-prod = "https://discord.com/api/webhooks/1038669013863104572/6IEqXuZOhUHtrervvnaAx3WaLRR3rgfRqctqD2lTdN6wph2ZgvriftDPCXgrzj_NKIkp"
+prod = "https://discord.com/api/webhooks/CHANNEL/TOKEN"
 
 webhook = DiscordWebhook(
         url = prod,
